@@ -1,17 +1,15 @@
-// EditPost.jsx
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose }) => {
   const [title, setTitle] = useState(initialTitle);
   const [text, setText] = useState(initialText);
-  const [image, setImage] = useState(initialImage);
-
+  const [image, setImage] = useState(null); // Track selected image file
+  console.log(postId);
   useEffect(() => {
     setTitle(initialTitle);
     setText(initialText);
-    setImage(initialImage);
-  }, [initialTitle, initialText, initialImage]);
+  }, [initialTitle, initialText]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +17,9 @@ const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose }) 
     const formData = new FormData();
     formData.append('title', title);
     formData.append('text', text);
-    formData.append('image', image);
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
       const response = await fetch(`http://localhost:5000/api/posts/${postId}`, {
@@ -37,6 +37,10 @@ const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose }) 
       console.error('Error:', error);
       toast.error('Error during post update');
     }
+  };
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
 
   return (
@@ -65,7 +69,7 @@ const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose }) 
         <label className="block mb-2 text-lg">Image</label>
         <input
           type="file"
-          onChange={(e) => setImage(e.target.files[0])}
+          onChange={handleImageChange}
           className="w-full px-4 py-2 border rounded text-lg"
         />
       </div>

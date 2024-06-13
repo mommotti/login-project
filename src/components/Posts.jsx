@@ -1,9 +1,9 @@
 // Posts.jsx
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Post from './Post';
 import { toast } from 'react-toastify';
 
-const Posts = ({ onEdit }) => { // Ensure onEdit is received as a prop
+const Posts = ({ onEdit }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -33,6 +33,7 @@ const Posts = ({ onEdit }) => { // Ensure onEdit is received as a prop
             text={post.text}
             image={post.image}
             dateCreated={post.dateCreated}
+            postId={post._id} // Pass postId to Post component
             onEdit={onEdit} // Pass onEdit function to Post component
           />
         ))

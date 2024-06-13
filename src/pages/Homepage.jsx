@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import CreatePost from '../components/CreatePost';
 import Posts from '../components/Posts';
 import { CSSTransition } from 'react-transition-group';
-import EditPost from '../components/EditPost'; // Import EditPost component
+import EditPost from '../components/EditPost';
 import '../styles/PostAnimation.css';
 
 const Homepage = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
-  const [editPostData, setEditPostData] = useState(null); // State to manage edit post data
+  const [editPostData, setEditPostData] = useState(null);
 
   const handleEditPost = (postData) => {
     setEditPostData(postData);
@@ -56,8 +56,7 @@ const Homepage = () => {
           </div>
         )}
 
-        {/* Render Posts component */}
-        <Posts onEdit={handleEditPost} />
+        <Posts onEdit={handleEditPost} /> {/* Pass onEdit function to Posts */}
       </div>
     </div>
   );

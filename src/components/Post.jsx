@@ -14,10 +14,9 @@ const Post = ({ title, text, image, dateCreated, onEdit, postId }) => {
         />
       )}
       <p className="text-sm text-gray-500">{new Date(dateCreated).toLocaleString()}</p>
-
       {/* Edit Button */}
       <button
-        onClick={() => onEdit({ _id: postId, title, text, image })}
+        onClick={() => onEdit({ _id: postId, title, text, image })} // Ensure onEdit is invoked correctly
         className="py-2 px-4 bg-gray-300 text-gray-800 rounded mt-2"
       >
         Edit Post
