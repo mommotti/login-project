@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const CreatePost = () => {
+const CreatePost = ({ onCreate }) => {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [image, setImage] = useState(null);
@@ -27,6 +27,9 @@ const CreatePost = () => {
         setTitle('');
         setText('');
         setImage(null);
+
+        // Call onCreate function passed from Homepage to fetch updated posts
+        onCreate();
       } else {
         toast.error('Failed to create post');
       }
@@ -34,6 +37,12 @@ const CreatePost = () => {
       console.error('Error:', error);
       toast.error('Error during post creation');
     }
+  };
+
+  const handleCancel = () => {
+    setTitle('');
+    setText('');
+    setImage(null);
   };
 
   return (
@@ -67,9 +76,14 @@ const CreatePost = () => {
             className="w-full px-4 py-2 border rounded text-lg"
           />
         </div>
-        <button type="submit" className="w-full py-2 bg-blue-500 text-white rounded text-lg">
-          Create Post
-        </button>
+        <div className="flex justify-between">
+          <button type="button" onClick={handleCancel} className="w-1/2 py-2 bg-gray-300 text-gray-800 rounded text-lg">
+            Cancel
+          </button>
+          <button type="submit" className="w-1/2 py-2 bg-blue-500 text-white rounded text-lg">
+            Create Post
+          </button>
+        </div>
       </form>
       <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </>

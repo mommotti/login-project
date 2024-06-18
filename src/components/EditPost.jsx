@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+// EditPost.jsx
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose }) => {
+const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose, onUpdate }) => {
   const [title, setTitle] = useState(initialTitle);
   const [text, setText] = useState(initialText);
-  const [image, setImage] = useState(null); // Track selected image file
-  console.log(postId);
-  useEffect(() => {
-    setTitle(initialTitle);
-    setText(initialText);
-  }, [initialTitle, initialText]);
+  const [image, setImage] = useState(initialImage);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +14,7 @@ const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose }) 
     const formData = new FormData();
     formData.append('title', title);
     formData.append('text', text);
-    if (image) {
+    if (image instanceof File) {
       formData.append('image', image);
     }
 
@@ -28,8 +25,9 @@ const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose }) 
       });
 
       if (response.ok) {
+        const updatedPost = await response.json();
         toast.success('Post updated successfully');
-        onClose();
+        onUpdate(updatedPost); // Call onUpdate with the updated post data
       } else {
         toast.error('Failed to update post');
       }
@@ -37,10 +35,6 @@ const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose }) 
       console.error('Error:', error);
       toast.error('Error during post update');
     }
-  };
-
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
   };
 
   return (
@@ -69,14 +63,21 @@ const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose }) 
         <label className="block mb-2 text-lg">Image</label>
         <input
           type="file"
-          onChange={handleImageChange}
+          onChange={(e) => setImage(e.target.files[0])}
           className="w-full px-4 py-2 border rounded text-lg"
         />
+        {initialImage && !image && (
+          <img
+            src={`http://localhost:5000/uploads/${initialImage}`}
+            alt={initialTitle}
+            className="w-full h-auto object-cover rounded mt-4"
+          />
+        )}
       </div>
       <button type="submit" className="w-full py-2 bg-blue-500 text-white rounded text-lg">
         Update Post
       </button>
-      <button type="button" onClick={onClose} className="mt-4 w-full py-2 bg-gray-300 text-gray-800 rounded text-lg">
+      <button type="button" onClick={onClose} className="w-full py-2 bg-gray-300 text-gray-800 rounded text-lg mt-2">
         Cancel
       </button>
     </form>

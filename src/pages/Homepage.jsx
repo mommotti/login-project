@@ -1,14 +1,34 @@
-// Homepage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CreatePost from '../components/CreatePost';
 import Posts from '../components/Posts';
 import { CSSTransition } from 'react-transition-group';
 import EditPost from '../components/EditPost';
+import { toast } from 'react-toastify';
 import '../styles/PostAnimation.css';
 
 const Homepage = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [editPostData, setEditPostData] = useState(null);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/posts');
+      if (response.ok) {
+        const data = await response.json();
+        const sortedPosts = data.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));
+        setPosts(sortedPosts);
+      } else {
+        toast.error('Failed to fetch posts');
+      }
+    } catch (error) {
+      toast.error('Error fetching posts');
+    }
+  };
 
   const handleEditPost = (postData) => {
     setEditPostData(postData);
@@ -16,6 +36,12 @@ const Homepage = () => {
 
   const handleCloseEdit = () => {
     setEditPostData(null);
+    fetchPosts();
+  };
+
+  const handleCreatePost = async () => {
+    await fetchPosts();
+    setShowCreatePost(false);
   };
 
   return (
@@ -36,12 +62,11 @@ const Homepage = () => {
         >
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded shadow-md">
-              <CreatePost />
+              <CreatePost onCreate={handleCreatePost} />
             </div>
           </div>
         </CSSTransition>
 
-        {/* Render EditPost component if editPostData is set */}
         {editPostData && (
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50">
             <div className="bg-white p-6 rounded shadow-md">
@@ -56,7 +81,7 @@ const Homepage = () => {
           </div>
         )}
 
-        <Posts onEdit={handleEditPost} /> {/* Pass onEdit function to Posts */}
+        <Posts posts={posts} onEdit={handleEditPost} />
       </div>
     </div>
   );
