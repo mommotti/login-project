@@ -11,7 +11,7 @@ const Posts = ({ onEdit }) => {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/posts');
+      const response = await fetch('http://https://login-project-backend.onrender.com/api/posts');
       if (!response.ok) {
         throw new Error('Failed to fetch posts');
       }
@@ -28,7 +28,7 @@ const Posts = ({ onEdit }) => {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/posts/${postId}`, {
+      const response = await fetch(`http://https://login-project-backend.onrender.com/api/posts/${postId}`, {
         method: 'DELETE',
       });
 
@@ -36,12 +36,16 @@ const Posts = ({ onEdit }) => {
         setPosts(posts.filter(post => post._id !== postId));
         toast.success('Post deleted successfully');
       } else {
+        const errorData = await response.json();
+        console.error('Failed to delete post:', errorData);
         toast.error('Failed to delete post');
       }
     } catch (error) {
+      console.error('Error deleting post:', error);
       toast.error('Error deleting post');
     }
   };
+
 
   return (
     <div className="space-y-4">

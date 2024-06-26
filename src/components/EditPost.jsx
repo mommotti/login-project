@@ -19,7 +19,7 @@ const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose, on
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/posts/${postId}`, {
+      const response = await fetch(`http://https://login-project-backend.onrender.com/api/posts/${postId}`, {
         method: 'PUT',
         body: formData,
       });
@@ -68,7 +68,7 @@ const EditPost = ({ postId, initialTitle, initialText, initialImage, onClose, on
         />
         {initialImage && !image && (
           <img
-            src={`http://localhost:5000/uploads/${initialImage}`}
+            src={`http://https://login-project-backend.onrender.com/uploads/${initialImage}`}
             alt={initialTitle}
             className="w-full h-auto object-cover rounded mt-4"
           />

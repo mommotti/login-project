@@ -9,7 +9,7 @@ const Post = ({ title, text, image, dateCreated, onEdit, onDelete, postId }) => 
       <p className="text-lg mb-4">{text}</p>
       {image && (
         <img
-          src={`http://localhost:5000/uploads/${image}`}
+          src={`http://https://login-project-backend.onrender.com/uploads/${image}`}
           alt={title}
           className="w-full h-auto object-cover rounded mb-4"
         />

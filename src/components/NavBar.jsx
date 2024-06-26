@@ -11,7 +11,7 @@ const NavBar = () => {
         <h1 className="text-white text-xl font-bold">CRUD APP WITH LOGIN</h1>
       </div>
       {isAuthenticated ? (
-        <button onClick={logout} className="text-white ml-4">
+        <button onClick={logout} className=" bg-red-500 text-white ml-4">
           Log Out
         </button>
       ) : (

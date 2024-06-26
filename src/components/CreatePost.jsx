@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const CreatePost = ({ onCreate }) => {
+const CreatePost = ({ onCreate, onClose }) => { // Add onClose prop to handle modal closing
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [image, setImage] = useState(null);
@@ -17,7 +17,7 @@ const CreatePost = ({ onCreate }) => {
     formData.append('image', image);
 
     try {
-      const response = await fetch('http://localhost:5000/api/posts', {
+      const response = await fetch('http://https://login-project-backend.onrender.com/api/posts', {
         method: 'POST',
         body: formData,
       });
@@ -30,6 +30,7 @@ const CreatePost = ({ onCreate }) => {
 
         // Call onCreate function passed from Homepage to fetch updated posts
         onCreate();
+        onClose(); // Close the modal after creating a post
       } else {
         toast.error('Failed to create post');
       }
@@ -43,6 +44,7 @@ const CreatePost = ({ onCreate }) => {
     setTitle('');
     setText('');
     setImage(null);
+    onClose(); // Close the modal when canceling
   };
 
   return (

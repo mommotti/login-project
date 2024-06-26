@@ -1,3 +1,4 @@
+// Homepage.jsx
 import React, { useState, useEffect } from 'react';
 import CreatePost from '../components/CreatePost';
 import Posts from '../components/Posts';
@@ -12,20 +13,22 @@ const Homepage = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetchPosts();
+    fetchPosts(); // Fetch posts initially
   }, []);
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/posts');
+      const response = await fetch('http://https://login-project-backend.onrender.com/api/posts');
       if (response.ok) {
         const data = await response.json();
         const sortedPosts = data.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));
-        setPosts(sortedPosts);
+        setPosts(sortedPosts); // Update posts state with fetched and sorted data
       } else {
+        console.error('Failed to fetch posts');
         toast.error('Failed to fetch posts');
       }
     } catch (error) {
+      console.error('Error:', error);
       toast.error('Error fetching posts');
     }
   };
@@ -36,11 +39,15 @@ const Homepage = () => {
 
   const handleCloseEdit = () => {
     setEditPostData(null);
-    fetchPosts();
   };
 
-  const handleCreatePost = async () => {
-    await fetchPosts();
+  const handleUpdatePost = (updatedPost) => {
+    const updatedPosts = posts.map(post => post._id === updatedPost._id ? updatedPost : post);
+    setPosts(updatedPosts);
+    setEditPostData(null); // Close EditPost component
+  };
+
+  const handleCloseCreate = () => {
     setShowCreatePost(false);
   };
 
@@ -62,7 +69,7 @@ const Homepage = () => {
         >
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded shadow-md">
-              <CreatePost onCreate={handleCreatePost} />
+              <CreatePost onCreate={fetchPosts} onClose={handleCloseCreate} /> {/* Pass onClose prop */}
             </div>
           </div>
         </CSSTransition>
@@ -76,6 +83,7 @@ const Homepage = () => {
                 initialText={editPostData.text}
                 initialImage={editPostData.image}
                 onClose={handleCloseEdit}
+                onUpdate={handleUpdatePost}
               />
             </div>
           </div>
