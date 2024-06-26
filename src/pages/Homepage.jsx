@@ -18,7 +18,7 @@ const Homepage = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch('http://https://login-project-backend.onrender.com/api/posts');
+      const response = await fetch('https://login-project-backend.onrender.com/api/posts');
       if (response.ok) {
         const data = await response.json();
         const sortedPosts = data.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));

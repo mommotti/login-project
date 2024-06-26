@@ -17,7 +17,7 @@ const CreatePost = ({ onCreate, onClose }) => { // Add onClose prop to handle mo
     formData.append('image', image);
 
     try {
-      const response = await fetch('http://https://login-project-backend.onrender.com/api/posts', {
+      const response = await fetch('https://login-project-backend.onrender.com/api/posts', {
         method: 'POST',
         body: formData,
       });

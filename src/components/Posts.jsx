@@ -11,7 +11,7 @@ const Posts = ({ onEdit }) => {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch('http://https://login-project-backend.onrender.com/api/posts');
+      const response = await fetch('https://login-project-backend.onrender.com/api/posts');
       if (!response.ok) {
         throw new Error('Failed to fetch posts');
       }
@@ -28,7 +28,7 @@ const Posts = ({ onEdit }) => {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://https://login-project-backend.onrender.com/api/posts/${postId}`, {
+      const response = await fetch(`https://login-project-backend.onrender.com/api/posts/${postId}`, {
         method: 'DELETE',
       });
 
